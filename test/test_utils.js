@@ -218,7 +218,7 @@ describe('utils', function () {
     it('should replace illegal characters', function (done) {
       expect(utils.normalizeDomain('bad!host.bad_domain.org')).to.equal('bad-host.bad-domain.org');
       expect(utils.normalizeDomain('???bad!!!!host@#*!$.____bad()domain&^&$.org')).to.equal('bad----host.bad--domain.org');
-      expect(utils.normalizeDomain('bad1domain')).to.equal('bad-domain');
+      expect(utils.normalizeDomain('bad!domain')).to.equal('bad-domain');
       expect(utils.normalizeDomain('1domain')).to.equal('domain');
       done();
     })
