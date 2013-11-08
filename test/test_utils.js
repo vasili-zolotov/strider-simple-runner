@@ -234,7 +234,7 @@ describe('utils', function () {
   describe('.domainForGithubRepoBranch', function () {
     it('should generate correct domain', function (done) {
       var repo_ssh_url = 'git@github.com:vasili-zolotov/strider-simple-runner.git';
-      expect(utils.domainForGithubRepoBranch(repo_ssh_url,'my-branch')).to.equal('master.vasili-zolotov.strider-simple-runner');
+      expect(utils.domainForGithubRepoBranch(repo_ssh_url,'my-branch')).to.equal('my-branch.vasili-zolotov.strider-simple-runner');
       expect(utils.domainForGithubRepoBranch(repo_ssh_url,'Branch_1')).to.equal('branch-1.vasili-zolotov.strider-simple-runner');
       expect(utils.domainForGithubRepoBranch(repo_ssh_url,'1.0.0')).to.equal('.vasili-zolotov.strider-simple-runner'); //TODO: this is not good
       done();
