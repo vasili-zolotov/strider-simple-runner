@@ -204,4 +204,27 @@ describe('utils', function () {
       })
     })
   })
+  
+  describe('.normalizeDomain', function () {
+    it('should not modify correct domain', function (done) {
+      var domain = 'host1.sub-1.domain.org';
+      expect(utils.normalizeDomain(domain)).to.equal(domain);
+    })
+    
+    it('should replace illegal characters', function (done) {
+      expect(utils.normalizeDomain('bad!host.bad_domain.org')).to.equal('bad-host.bad-domain.org');
+      expect(utils.normalizeDomain('???bad!!!!host@#*!$.____bad(domain&^&$.org')).to.equal('bad----host.bad--domain.org');
+    })
+    
+    it('should remove leading digits', function (done) {
+      expect(utils.normalizeDomain('1host.1domain.org')).to.equal('host.domain.org');
+      expect(utils.normalizeDomain('12345host123.12345domain1.org')).to.equal('host123.domain1.org');
+    })    
+    
+    it('should remove leading and tailing hyphens', function (done) {
+      expect(utils.normalizeDomain('-host-.-domain-.org')).to.equal('host.domain.org');
+      expect(utils.normalizeDomain('---host-1---.---domain123-----.-org-')).to.equal('host-1.domain123.org');
+    })
+  })
+  
 })
