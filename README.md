@@ -1,11 +1,4 @@
-## Strider-simple-runner
-
-[![Build Status](https://hosted.stridercd.com/51f050cf04568a0c00000008/strider-cd/strider-simple-worker/badge)](https://hosted.stridercd.com/strider-cd/strider-simple-worker/)
-
-![Worker Picture](http://farm6.staticflickr.com/5187/5883651745_c17fb322df.jpg)
-
-Easy-to-configure in-process runner implementation for Strider Continous
-Deployment. This runner comes bundled with Strider.
+Runner extension for Strider.
 
 ## Spec
 
