@@ -209,12 +209,17 @@ describe('utils', function () {
     it('should not modify correct domain', function (done) {
       var domain = 'host1.sub-1.domain.org';
       expect(utils.normalizeDomain(domain)).to.equal(domain);
+      domain = 'domain';
+      expect(utils.normalizeDomain(domain)).to.equal(domain);
+      expect(utils.normalizeDomain('')).to.equal('');
       done();
     })
     
     it('should replace illegal characters', function (done) {
       expect(utils.normalizeDomain('bad!host.bad_domain.org')).to.equal('bad-host.bad-domain.org');
       expect(utils.normalizeDomain('???bad!!!!host@#*!$.____bad()domain&^&$.org')).to.equal('bad----host.bad--domain.org');
+      expect(utils.normalizeDomain('bad1domain')).to.equal('bad-domain');
+      expect(utils.normalizeDomain('1domain')).to.equal('domain');
       done();
     })
     
@@ -236,7 +241,7 @@ describe('utils', function () {
       var repo_ssh_url = 'git@github.com:vasili-zolotov/strider-simple-runner.git';
       expect(utils.domainForGithubRepoBranch(repo_ssh_url,'my-branch')).to.equal('my-branch.vasili-zolotov.strider-simple-runner');
       expect(utils.domainForGithubRepoBranch(repo_ssh_url,'Branch_1')).to.equal('branch-1.vasili-zolotov.strider-simple-runner');
-      expect(utils.domainForGithubRepoBranch(repo_ssh_url,'1.0.0')).to.equal('v1-0-0.vasili-zolotov.strider-simple-runner'); //TODO: this case is broken now
+      expect(utils.domainForGithubRepoBranch(repo_ssh_url,'1.0.0')).to.equal('v1-0-0.vasili-zolotov.strider-simple-runner');
       done();
     })
   })
