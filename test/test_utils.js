@@ -236,7 +236,7 @@ describe('utils', function () {
       var repo_ssh_url = 'git@github.com:vasili-zolotov/strider-simple-runner.git';
       expect(utils.domainForGithubRepoBranch(repo_ssh_url,'my-branch')).to.equal('my-branch.vasili-zolotov.strider-simple-runner');
       expect(utils.domainForGithubRepoBranch(repo_ssh_url,'Branch_1')).to.equal('branch-1.vasili-zolotov.strider-simple-runner');
-      expect(utils.domainForGithubRepoBranch(repo_ssh_url,'1.0.0')).to.equal('.vasili-zolotov.strider-simple-runner'); //TODO: this is not good
+      expect(utils.domainForGithubRepoBranch(repo_ssh_url,'1.0.0')).to.equal('v1-0-0.vasili-zolotov.strider-simple-runner'); //TODO: this case is broken now
       done();
     })
   })
