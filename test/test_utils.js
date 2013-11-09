@@ -255,6 +255,7 @@ describe('utils', function () {
     
     it('should riase an error when paramters are illegal', function (done) {
       var repo_ssh_url = 'git@github.com:vasili-zolotov/strider-simple-runner.git';
+      var repo_https_url = 'https://github.com/vasili-zolotov/strider-simple-runner.git';
       expect(function(){ utils.domainForGithubRepoBranch(null, 'branch'); }).to.throw(Error, /repo_ssh_url is empty/);
       expect(function(){ utils.domainForGithubRepoBranch(repo_ssh_url, null) }).to.throw(Error, /branch is empty/);
       expect(function(){ utils.domainForGithubRepoBranch('', '') }).to.throw(Error, /repo_ssh_url is empty|branch is empty/);
@@ -262,6 +263,7 @@ describe('utils', function () {
       expect(function(){ utils.domainForGithubRepoBranch(123, null) }).to.throw(Error, /repo_ssh_url is not a string|branch is empty/);
       expect(function(){ utils.domainForGithubRepoBranch(undefined, {}) }).to.throw(Error, /repo_ssh_url is empty|branch is not a string/);
       expect(function(){ utils.domainForGithubRepoBranch(123, new Date()) }).to.throw(Error, /repo_ssh_url is not a string|branch is not a string/);
+      expect(function(){ utils.domainForGithubRepoBranch(repo_https_url, 'branch1') }).to.throw(Error, /repo_ssh_url is not correct/);
       done();
     })
   })
