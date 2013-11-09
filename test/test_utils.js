@@ -204,4 +204,68 @@ describe('utils', function () {
       })
     })
   })
+  
+  describe('.normalizeDomain', function () {
+    it('should not modify correct domain', function (done) {
+      var domain = 'host1.sub-1.domain.org';
+      expect(utils.normalizeDomain(domain)).to.equal(domain);
+      domain = 'domain';
+      expect(utils.normalizeDomain(domain)).to.equal(domain);
+      done();
+    })
+    
+    it('should replace illegal characters', function (done) {
+      expect(utils.normalizeDomain('bad!host.bad_domain.org')).to.equal('bad-host.bad-domain.org');
+      expect(utils.normalizeDomain('???bad!!!!host@#*!$.____bad()domain&^&$.org')).to.equal('bad----host.bad--domain.org');
+      expect(utils.normalizeDomain('bad!domain')).to.equal('bad-domain');
+      expect(utils.normalizeDomain('1domain')).to.equal('domain');
+      done();
+    })
+    
+    it('should remove leading digits', function (done) {
+      expect(utils.normalizeDomain('1host.1domain.org')).to.equal('host.domain.org');
+      expect(utils.normalizeDomain('12345host123.12345domain1.org')).to.equal('host123.domain1.org');
+      done();
+    })    
+    
+    it('should remove leading and tailing hyphens', function (done) {
+      expect(utils.normalizeDomain('-host-.-domain-.org')).to.equal('host.domain.org');
+      expect(utils.normalizeDomain('---host-1---.---domain123-----.-org-')).to.equal('host-1.domain123.org');
+      done();
+    })
+    
+    it('should riase an error when paramters are illegal', function (done) {
+      expect(function(){ utils.normalizeDomain(null); }).to.throw(Error, /domain is empty/);
+      expect(function(){ utils.normalizeDomain(undefined) }).to.throw(Error, /domain is empty/);
+      expect(function(){ utils.normalizeDomain('') }).to.throw(Error, /domain is empty/);
+      expect(function(){ utils.normalizeDomain(123) }).to.throw(Error, /domain is not a string/);
+      expect(function(){ utils.normalizeDomain({}) }).to.throw(Error, /domain is not a string/);
+      done();
+    })
+  })
+  
+  describe('.domainForGithubRepoBranch', function () {
+    it('should generate correct domain', function (done) {
+      var repo_ssh_url = 'git@github.com:vasili-zolotov/strider-simple-runner.git';
+      expect(utils.domainForGithubRepoBranch(repo_ssh_url,'my-branch')).to.equal('my-branch.vasili-zolotov.strider-simple-runner');
+      expect(utils.domainForGithubRepoBranch(repo_ssh_url,'Branch_1')).to.equal('branch-1.vasili-zolotov.strider-simple-runner');
+      expect(utils.domainForGithubRepoBranch(repo_ssh_url,'1.0.0')).to.equal('v1-0-0.vasili-zolotov.strider-simple-runner');
+      done();
+    })
+    
+    it('should riase an error when paramters are illegal', function (done) {
+      var repo_ssh_url = 'git@github.com:vasili-zolotov/strider-simple-runner.git';
+      var repo_https_url = 'https://github.com/vasili-zolotov/strider-simple-runner.git';
+      expect(function(){ utils.domainForGithubRepoBranch(null, 'branch'); }).to.throw(Error, /repo_ssh_url is empty/);
+      expect(function(){ utils.domainForGithubRepoBranch(repo_ssh_url, null) }).to.throw(Error, /branch is empty/);
+      expect(function(){ utils.domainForGithubRepoBranch('', '') }).to.throw(Error, /repo_ssh_url is empty|branch is empty/);
+      expect(function(){ utils.domainForGithubRepoBranch(123, 'branch1') }).to.throw(Error, /repo_ssh_url is not a string/);
+      expect(function(){ utils.domainForGithubRepoBranch(123, null) }).to.throw(Error, /repo_ssh_url is not a string|branch is empty/);
+      expect(function(){ utils.domainForGithubRepoBranch(undefined, {}) }).to.throw(Error, /repo_ssh_url is empty|branch is not a string/);
+      expect(function(){ utils.domainForGithubRepoBranch(123, new Date()) }).to.throw(Error, /repo_ssh_url is not a string|branch is not a string/);
+      expect(function(){ utils.domainForGithubRepoBranch(repo_https_url, 'branch1') }).to.throw(Error, /repo_ssh_url is not correct/);
+      done();
+    })
+  })
+  
 })
