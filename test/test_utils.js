@@ -211,7 +211,6 @@ describe('utils', function () {
       expect(utils.normalizeDomain(domain)).to.equal(domain);
       domain = 'domain';
       expect(utils.normalizeDomain(domain)).to.equal(domain);
-      expect(utils.normalizeDomain('')).to.equal('');
       done();
     })
     
@@ -234,6 +233,15 @@ describe('utils', function () {
       expect(utils.normalizeDomain('---host-1---.---domain123-----.-org-')).to.equal('host-1.domain123.org');
       done();
     })
+    
+    it('should riase an error when paramters are illegal', function (done) {
+      expect(function(){ utils.normalizeDomain(null); }).to.throw(Error, /domain is empty/);
+      expect(function(){ utils.normalizeDomain(undefined) }).to.throw(Error, /domain is empty/);
+      expect(function(){ utils.normalizeDomain('') }).to.throw(Error, /domain is empty/);
+      expect(function(){ utils.normalizeDomain(123) }).to.throw(Error, /domain is not a string/);
+      expect(function(){ utils.normalizeDomain({}) }).to.throw(Error, /domain is not a string/);
+      done();
+    })
   })
   
   describe('.domainForGithubRepoBranch', function () {
@@ -242,6 +250,18 @@ describe('utils', function () {
       expect(utils.domainForGithubRepoBranch(repo_ssh_url,'my-branch')).to.equal('my-branch.vasili-zolotov.strider-simple-runner');
       expect(utils.domainForGithubRepoBranch(repo_ssh_url,'Branch_1')).to.equal('branch-1.vasili-zolotov.strider-simple-runner');
       expect(utils.domainForGithubRepoBranch(repo_ssh_url,'1.0.0')).to.equal('v1-0-0.vasili-zolotov.strider-simple-runner');
+      done();
+    })
+    
+    it('should riase an error when paramters are illegal', function (done) {
+      var repo_ssh_url = 'git@github.com:vasili-zolotov/strider-simple-runner.git';
+      expect(function(){ utils.domainForGithubRepoBranch(null, 'branch'); }).to.throw(Error, /repo_ssh_url is empty/);
+      expect(function(){ utils.domainForGithubRepoBranch(repo_ssh_url, null) }).to.throw(Error, /branch is empty/);
+      expect(function(){ utils.domainForGithubRepoBranch('', '') }).to.throw(Error, /repo_ssh_url is empty|branch is empty/);
+      expect(function(){ utils.domainForGithubRepoBranch(123, 'branch1') }).to.throw(Error, /repo_ssh_url is not a string/);
+      expect(function(){ utils.domainForGithubRepoBranch(123, null) }).to.throw(Error, /repo_ssh_url is not a string|branch is empty/);
+      expect(function(){ utils.domainForGithubRepoBranch(undefined, {}) }).to.throw(Error, /repo_ssh_url is empty|branch is not a string/);
+      expect(function(){ utils.domainForGithubRepoBranch(123, new Date()) }).to.throw(Error, /repo_ssh_url is not a string|branch is not a string/);
       done();
     })
   })
