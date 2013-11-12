@@ -1,4 +1,4 @@
-Runner extension for Strider.
+Runner extension for Strider. pow!
 
 ## Spec
 
