@@ -6,7 +6,8 @@ var expect = require('chai').expect
 describe('cmd', function () {
   describe('.shellWrap', function () {
     it('should wrap', function () {
-      expect(cmd.shellWrap('echo hello')).to.eql({cmd: 'sh', args: ['-c', 'echo hello']})
+      var wrapped = cmd.shellWrap('echo hello');
+      expect(wrapped).to.eql({cmd: 'timeout', args: ['600', 'bash', '-c', 'echo hello']})
     })
   })
 
