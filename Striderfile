@@ -1,0 +1,8 @@
+set -e
+# npm install
+npm intall
+npm update
+# run tests
+npm test
+# deploy
+echo Success! Now schedule deployment of runner (todo).
