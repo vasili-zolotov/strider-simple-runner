@@ -17,5 +17,9 @@ describe('hints', function () {
       var message = 'making some changes\n@strider test this\n\nsome more text';
       expect(hints.parse(message)).to.eql('test this');
     });
+    
+    it('should return undefined when input is undefined', function () {
+      expect(hints.parse(undefined)).to.eql(undefined);
+    });
   });
 });
